@@ -98,12 +98,14 @@ Comandos SQL para Crear la Base de Datos y Tablas
 sql
 Copy code
 -- Crear base de datos
+```sql
 CREATE DATABASE eventdb;
-
+```
 -- Usar la base de datos creada
 \c eventdb;
 
 -- Crear la tabla de Eventos
+```sql
 CREATE TABLE IF NOT EXISTS Events (
     Id SERIAL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
@@ -132,6 +134,8 @@ CREATE TABLE IF NOT EXISTS Registrations (
     EventId INT REFERENCES Events(Id) ON DELETE CASCADE,
     RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```
+
 Este script SQL crea la base de datos eventdb y las tablas necesarias para el sistema: Events, Users, y Registrations.
 
 Consultas SQL en Dapper
@@ -140,13 +144,19 @@ Las consultas SQL se gestionan en archivos separados para mantener el código li
 sql
 Copy code
 -- Ejemplo de consulta en Dapper
+````sql
 SELECT * FROM Events;
+```
 🛠️ Instrucciones para Ejecutar el Proyecto
 Instalar Dependencias: Antes de ejecutar la aplicación, asegúrate de que todas las dependencias estén instaladas:
+```console
 dotnet restore
+```
 
 Ejecutar el Proyecto: Para ejecutar la aplicación, utiliza el siguiente comando:
+```console
 dotnet run
+```
 Acceder a la API:
 
 Swagger UI: La interfaz interactiva de Swagger estará disponible en https://localhost:{port}/swagger para probar las rutas de la API.
