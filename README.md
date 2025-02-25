@@ -59,6 +59,7 @@ namespace EventManagmentApi.Controllers
         }
     }
 }
+```
 Este controlador tiene una ruta simple que responde con un mensaje para verificar que la API está funcionando correctamente.
 
 2. Services
@@ -88,6 +89,7 @@ private void CreateDatabaseIfNotExists()
         Console.WriteLine("⚡ La base de datos ya existe. No se necesita crearla.");
     }
 }
+```
 
 4. Uso de Interfaces y Modelos
 Las interfaces permiten que el código esté desacoplado y sea más fácil de mantener. Los modelos representan las entidades de negocio como Eventos, Usuarios y Registros, asegurando que la estructura de la base de datos y el código estén alineados.
