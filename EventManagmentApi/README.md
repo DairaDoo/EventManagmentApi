@@ -144,17 +144,17 @@ Las consultas SQL se gestionan en archivos separados para mantener el código li
 sql
 Copy code
 -- Ejemplo de consulta en Dapper
-````sql
+```sql
 SELECT * FROM Events;
 ```
 🛠️ Instrucciones para Ejecutar el Proyecto
 Instalar Dependencias: Antes de ejecutar la aplicación, asegúrate de que todas las dependencias estén instaladas:
-```console
+```bash
 dotnet restore
 ```
 
 Ejecutar el Proyecto: Para ejecutar la aplicación, utiliza el siguiente comando:
-```console
+```bash
 dotnet run
 ```
 Acceder a la API:
