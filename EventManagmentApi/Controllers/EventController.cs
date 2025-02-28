@@ -10,10 +10,10 @@ namespace EventManagmentApi.Controllers
     [Route("api/events")] // ruta de la api
     public class EventController: ControllerBase
     {
-        private readonly EventService _eventService;
+        private readonly IEventService _eventService;
 
         // Injectamos el EventService para acceder a la lógica de negocio.
-        public EventController(EventService eventService)
+        public EventController(IEventService eventService)
         {
             _eventService = eventService;
         }

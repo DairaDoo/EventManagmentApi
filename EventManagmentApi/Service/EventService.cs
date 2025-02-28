@@ -5,43 +5,46 @@ using EventManagmentApi.Models;
 
 namespace EventManagmentApi.Service
 {
-    public class EventService
+    public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
 
-        // Injectamos la dependencia IEventRepository para acceder a sus metodos.
         public EventService(IEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
         }
 
-        // Gell All Events
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
             return await _eventRepository.GetAllEventsAsync();
         }
 
-        // Get Event By ID
         public async Task<Event> GetEventByIdAsync(int id)
         {
             return await _eventRepository.GetEventByIdAsync(id);
         }
 
-        // Create Event 
-        public async Task<int> CreateEventAsync(Event evt)
+        public async Task<int> CreateEventAsync(Event newEvent)
         {
-            return await _eventRepository.CreateEventAsync(evt);
+            if (newEvent == null || string.IsNullOrWhiteSpace(newEvent.Name))
+                throw new ArgumentException("Event data is invalid.");
+
+            return await _eventRepository.CreateEventAsync(newEvent);
         }
 
-        // Update Event
-        public async Task<bool> UpdateEventAsync(Event evt)
+        public async Task<bool> UpdateEventAsync(Event updatedEvent)
         {
-            return await _eventRepository.UpdateEventAsync(evt);
+            if (updatedEvent == null || updatedEvent.Id <= 0)
+                return false;
+
+            return await _eventRepository.UpdateEventAsync(updatedEvent);
         }
 
-        // Delete Event
         public async Task<bool> DeleteEventAsync(int id)
         {
+            if (id <= 0)
+                return false;
+
             return await _eventRepository.DeleteEventAsync(id);
         }
     }
