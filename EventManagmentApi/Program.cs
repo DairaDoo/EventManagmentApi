@@ -7,8 +7,13 @@ using EventManagmentApi.Data.Repositories;
 using EventManagmentApi.Service;
 using EventManagmentApi.Data.Interfaces;
 using EventManagmentApi.Service.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var key = Encoding.UTF8.GetBytes(jwtSettings.GetValue<string>("SecretKey"));
 
 // Agregar servicios al contenedor
 builder.Services.AddControllers();
@@ -47,6 +52,27 @@ builder.Services.AddScoped<IUserRepository>(provider =>
 });
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Inyección para JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            
+        };
+});
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+
 var app = builder.Build();
 
 // Inicializar la base de datos
@@ -77,6 +103,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowAll"); // Aplicar la política de CORS
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

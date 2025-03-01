@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EventManagmentApi.Models;
+using EventManagmentApi.Service;
 using EventManagmentApi.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventManagmentApi.Controllers
@@ -11,13 +14,29 @@ namespace EventManagmentApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest loginRequest)
+        {
+            var token = await _authService.AuthenticateAsync(loginRequest.Username, loginRequest.Password);
+            if (token == null)
+            {
+                return Unauthorized(new { message = "Invalid Credentials" });
+            }
+
+            return Ok(new { Token = token });
+        }
+
+
         // Obtener todos los usuarios
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
