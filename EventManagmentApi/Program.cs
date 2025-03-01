@@ -6,6 +6,8 @@ using EventManagement.Database;
 using EventManagmentApi.Data.Repositories;
 using EventManagmentApi.Service;
 using EventManagmentApi.Controllers;
+using EventManagmentApi.Data.Interfaces;
+using EventManagmentApi.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

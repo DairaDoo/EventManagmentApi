@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using EventManagmentApi.Models;
 
-namespace EventManagmentApi.Service
+namespace EventManagmentApi.Service.Interfaces
 {
     public interface IEventService
     {

@@ -1,6 +1,6 @@
 ﻿using EventManagmentApi.Models;
 
-namespace EventManagmentApi.Data.Repositories
+namespace EventManagmentApi.Data.Interfaces
 {
     // Metodos que usarán los Eventos
     public interface IEventRepository

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EventManagmentApi.Data.Repositories;
+using EventManagmentApi.Data.Interfaces;
 using EventManagmentApi.Models;
+using EventManagmentApi.Service.Interfaces;
 
 namespace EventManagmentApi.Service
 {

@@ -1,6 +1,6 @@
 ﻿namespace EventManagmentApi.Helpers
 {
-    public class SqlQueries // comandos SQL para los Eventos
+    public class EventSqlQueries // comandos SQL para los Eventos
     {
         public const string GetAllEvents = @"SELECT * FROM Events"; // obtener todos los eventos
 

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using EventManagmentApi.Data.Interfaces;
 using EventManagmentApi.Helpers;
 using EventManagmentApi.Models;
 using Npgsql;
@@ -25,28 +26,28 @@ namespace EventManagmentApi.Data.Repositories
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
             using var connection = Connection;
-            return await connection.QueryAsync<Event>(SqlQueries.GetAllEvents);
+            return await connection.QueryAsync<Event>(EventSqlQueries.GetAllEvents);
         }
 
         // Get Event By Id
         public async Task<Event> GetEventByIdAsync(int id)
         {
             using var connection = Connection;
-            return await connection.QueryFirstOrDefaultAsync<Event>(SqlQueries.GetEventById, new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<Event>(EventSqlQueries.GetEventById, new { Id = id });
         }
 
         // Create Event 
         public async Task<int> CreateEventAsync(Event evt)
         {
             using var connection = Connection;
-            return await connection.ExecuteScalarAsync<int>(SqlQueries.CreateEvent, evt);
+            return await connection.ExecuteScalarAsync<int>(EventSqlQueries.CreateEvent, evt);
         }
         
         // Update Event
         public async Task<bool> UpdateEventAsync(Event evt)
         {
             using var connection = Connection;
-            var affectedRows = await connection.ExecuteAsync(SqlQueries.UpdateEvent, evt);
+            var affectedRows = await connection.ExecuteAsync(EventSqlQueries.UpdateEvent, evt);
             return affectedRows > 0;
         }
 
@@ -54,7 +55,7 @@ namespace EventManagmentApi.Data.Repositories
         public async Task<bool> DeleteEventAsync(int id)
         {
             using var connection = Connection;
-            var affectedRows =  await connection.ExecuteAsync(SqlQueries.DeleteEvent, new {Id = id});
+            var affectedRows =  await connection.ExecuteAsync(EventSqlQueries.DeleteEvent, new {Id = id});
             return affectedRows > 0;
         }
 

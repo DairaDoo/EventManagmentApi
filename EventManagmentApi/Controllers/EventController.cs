@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EventManagmentApi.Models;
-using EventManagmentApi.Service;
+using EventManagmentApi.Service.Interfaces;
 
 namespace EventManagmentApi.Controllers
 {
