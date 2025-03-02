@@ -79,7 +79,8 @@ namespace EventManagement.Database
                     Id SERIAL PRIMARY KEY,
                     UserId INT REFERENCES Users(Id) ON DELETE CASCADE,
                     EventId INT REFERENCES Events(Id) ON DELETE CASCADE,
-                    RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    Status VARCHAR(20) DEFAULT 'Pending' CHECK (Status IN ('Pending', 'Confirmed', 'Cancelled', 'Rejected'))
                 );
             ";
 

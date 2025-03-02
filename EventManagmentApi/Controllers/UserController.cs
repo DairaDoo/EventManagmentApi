@@ -7,6 +7,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
+// El Autorize se debe añadir después en los endpoints una vez finalizado
+// Esto causará que ciertos endpoints requieran recibir un JWT, como forma de validación.
+
+// incluso podriamos restringir por Roles
+//[Authorize(Roles = "Admin")]
+//[HttpGet("admin-only")]
+
+
 namespace EventManagmentApi.Controllers
 {
     [Route("api/users")]
@@ -36,7 +44,7 @@ namespace EventManagmentApi.Controllers
 
 
         // Obtener todos los usuarios
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {

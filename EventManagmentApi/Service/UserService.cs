@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using EventManagmentApi.Data.Interfaces;
 using EventManagmentApi.Models;
 using EventManagmentApi.Service.Interfaces;
+using BCrypt;
 
 namespace EventManagmentApi.Service
 {
@@ -50,8 +51,8 @@ namespace EventManagmentApi.Service
             {
                 throw new System.Exception("This email is already in use.");
             }
-
-
+            // hasheamos el password al crear el usuario
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             return await _userRepository.CreateUserAsync(user);
         }
 

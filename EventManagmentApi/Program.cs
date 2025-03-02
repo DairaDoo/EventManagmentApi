@@ -52,6 +52,16 @@ builder.Services.AddScoped<IUserRepository>(provider =>
 });
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Inyección de dependencias para Register
+builder.Services.AddScoped<IRegistrationRepository>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    return new RegistrationRepository(connectionString);
+});
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+
+
 // Inyección para JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
