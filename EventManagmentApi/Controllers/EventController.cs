@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿// Controllers/EventController.cs
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EventManagmentApi.Models;
+using EventManagmentApi.Models.DTOs;
 using EventManagmentApi.Service.Interfaces;
 
 namespace EventManagmentApi.Controllers
 {
     [ApiController]
     [Route("api/events")] // ruta de la api
-    public class EventController: ControllerBase
+    public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;
 
@@ -35,23 +37,21 @@ namespace EventManagmentApi.Controllers
             {
                 return NotFound();
             }
-
             return Ok(evt);
         }
 
         // Create Event
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(Event evt)
+        public async Task<IActionResult> CreateEvent([FromForm] EventCreateDto eventDto)
         {
-            var newEventId = await _eventService.CreateEventAsync(evt);
-            return CreatedAtAction(nameof(GetEventById), new {id = newEventId}, evt);
+            var newEventId = await _eventService.CreateEventWithImageAsync(eventDto);
+            return CreatedAtAction(nameof(GetEventById), new { id = newEventId }, eventDto);
         }
 
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> UpdateEvent(int id, Event evt)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEvent(int id, [FromForm] EventCreateDto eventDto)
         {
-            if (id != evt.Id) return BadRequest();
-            var updatedEvent = await _eventService.UpdateEventAsync(evt);
+            var updatedEvent = await _eventService.UpdateEventWithImageAsync(id, eventDto);
             return updatedEvent ? NoContent() : NotFound();
         }
 
@@ -61,7 +61,5 @@ namespace EventManagmentApi.Controllers
             var deletedEvent = await _eventService.DeleteEventAsync(id);
             return deletedEvent ? NoContent() : NotFound();
         }
-
-
     }
 }

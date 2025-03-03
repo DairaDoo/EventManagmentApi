@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EventManagmentApi.Models;
+using EventManagmentApi.Models.DTOs;
 
 namespace EventManagmentApi.Service.Interfaces
 {
     public interface IEventService
     {
-        Task<IEnumerable<Event>> GetAllEventsAsync(); // Get all events
-        Task<Event> GetEventByIdAsync(int eventId);  // Get event by ID
-        Task<int> CreateEventAsync(Event newEvent);  // Create event
-        Task<bool> UpdateEventAsync(Event updatedEvent); // Update event
-        Task<bool> DeleteEventAsync(int eventId);  // Delete event
+        Task<IEnumerable<Event>> GetAllEventsAsync();
+        Task<Event> GetEventByIdAsync(int id);
+        Task<int> CreateEventAsync(Event newEvent);
+        Task<int> CreateEventWithImageAsync(EventCreateDto eventDto);
+        Task<bool> UpdateEventAsync(Event updatedEvent);
+        Task<bool> UpdateEventWithImageAsync(int id, EventCreateDto eventDto);
+        Task<bool> DeleteEventAsync(int id);
+
     }
 }
