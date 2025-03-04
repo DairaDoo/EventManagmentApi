@@ -84,8 +84,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Servicio de Cloudinary para subir imagenes
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+// Servicio de MapBox para añadir geolocalizacion
+builder.Services.AddHttpClient<IMapboxGeolocationService, MapboxGeolocationService>();
+builder.Services.AddScoped<IMapboxGeolocationService, MapboxGeolocationService>();
 
 var app = builder.Build();
 

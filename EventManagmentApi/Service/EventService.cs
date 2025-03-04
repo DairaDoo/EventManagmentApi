@@ -7,17 +7,20 @@ using EventManagmentApi.Models;
 using EventManagmentApi.Models.DTOs;
 using EventManagmentApi.Service.Interfaces;
 
+
 namespace EventManagmentApi.Service
 {
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
         private readonly IPhotoService _photoService;
+        private readonly IMapboxGeolocationService _mapboxGeolocationService;
 
-        public EventService(IEventRepository eventRepository, IPhotoService photoService)
+        public EventService(IEventRepository eventRepository, IPhotoService photoService, IMapboxGeolocationService mapboxGeolocationService)
         {
             _eventRepository = eventRepository;
             _photoService = photoService;
+            _mapboxGeolocationService = mapboxGeolocationService;
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
@@ -38,6 +41,7 @@ namespace EventManagmentApi.Service
             return await _eventRepository.CreateEventAsync(newEvent);
         }
 
+        // Este es el que debo usar para crear un evento.
         public async Task<int> CreateEventWithImageAsync(EventCreateDto eventDto)
         {
             if (eventDto == null || string.IsNullOrWhiteSpace(eventDto.Name))
@@ -51,6 +55,23 @@ namespace EventManagmentApi.Service
                 Date = eventDto.Date,
                 Price = eventDto.Price
             };
+
+            // Geocodificación de la ubicación
+            if (!string.IsNullOrWhiteSpace(eventDto.Location))
+            {
+                try
+                {
+                    var (longitude, latitude) = await _mapboxGeolocationService.GetCoordinatesAsync(eventDto.Location);
+                    newEvent.Longitude = longitude;
+                    newEvent.Latitude = latitude;
+                }
+                catch
+                {
+                    // Manejar el caso en que la geocodificación falle
+                    newEvent.Longitude = null;
+                    newEvent.Latitude = null;
+                }
+            }
 
             // Subir imagen si existe
             if (eventDto.Image != null)
@@ -69,10 +90,11 @@ namespace EventManagmentApi.Service
             return await _eventRepository.UpdateEventAsync(updatedEvent);
         }
 
+
+        // Este es el que debo usar para actualizar un evento
         public async Task<bool> UpdateEventWithImageAsync(int id, EventCreateDto eventDto)
         {
             var existingEvent = await _eventRepository.GetEventByIdAsync(id);
-
             if (existingEvent == null)
                 return false;
 
@@ -82,6 +104,23 @@ namespace EventManagmentApi.Service
             existingEvent.Date = eventDto.Date;
             existingEvent.Price = eventDto.Price;
 
+            // Geocodificación de la ubicación
+            if (!string.IsNullOrWhiteSpace(eventDto.Location))
+            {
+                try
+                {
+                    var (longitude, latitude) = await _mapboxGeolocationService.GetCoordinatesAsync(eventDto.Location);
+                    existingEvent.Longitude = longitude;
+                    existingEvent.Latitude = latitude;
+                }
+                catch
+                {
+                    // Manejar el caso en que la geocodificación falle
+                    existingEvent.Longitude = null;
+                    existingEvent.Latitude = null;
+                }
+            }
+
             // Subir imagen si existe
             if (eventDto.Image != null)
             {
@@ -90,6 +129,8 @@ namespace EventManagmentApi.Service
 
             return await _eventRepository.UpdateEventAsync(existingEvent);
         }
+
+
 
         public async Task<bool> DeleteEventAsync(int id)
         {
