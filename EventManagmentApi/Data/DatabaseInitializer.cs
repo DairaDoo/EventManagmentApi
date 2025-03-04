@@ -60,6 +60,8 @@ namespace EventManagement.Database
                     Name VARCHAR(255) NOT NULL,
                     Description TEXT,
                     Location VARCHAR(255),
+                    Longitude DOUBLE PRECISION NULL,  
+                    Latitude DOUBLE PRECISION NULL,  
                     Date TIMESTAMP NOT NULL,
                     Price DECIMAL(10,2) NOT NULL,
                     ImageUrl TEXT NULL
