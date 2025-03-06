@@ -62,7 +62,9 @@ namespace EventManagement.Database
                     Location VARCHAR(255),
                     Date TIMESTAMP NOT NULL,
                     Price DECIMAL(10,2) NOT NULL,
-                    ImageUrl TEXT NULL
+                    ImageUrl TEXT NULL,
+                    Longitude double precision,
+                    Latitude double precision
                 );
 
                 CREATE TABLE IF NOT EXISTS Users (

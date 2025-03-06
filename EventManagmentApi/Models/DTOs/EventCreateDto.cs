@@ -8,6 +8,8 @@
         public DateTime Date { get; set; }
         public decimal Price { get; set; }
         public IFormFile Image { get; set; }
+        public double? Longitude { get; set; }  
+        public double? Latitude { get; set; }   
 
     }
 }

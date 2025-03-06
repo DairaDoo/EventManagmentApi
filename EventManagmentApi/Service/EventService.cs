@@ -49,7 +49,9 @@ namespace EventManagmentApi.Service
                 Description = eventDto.Description,
                 Location = eventDto.Location,
                 Date = eventDto.Date,
-                Price = eventDto.Price
+                Price = eventDto.Price,
+                Longitude = eventDto.Longitude,
+                Latitude = eventDto.Latitude
             };
 
             // Subir imagen si existe
@@ -81,6 +83,8 @@ namespace EventManagmentApi.Service
             existingEvent.Location = eventDto.Location;
             existingEvent.Date = eventDto.Date;
             existingEvent.Price = eventDto.Price;
+            existingEvent.Longitude = eventDto.Longitude;
+            existingEvent.Latitude = eventDto.Latitude;
 
             // Subir imagen si existe
             if (eventDto.Image != null)
