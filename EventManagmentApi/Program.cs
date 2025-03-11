@@ -13,6 +13,7 @@ using System.Text;
 using EventManagmentApi.Helpers.Cloudinary;
 using System.Configuration;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings.GetValue<string>("SecretKey"));
@@ -35,6 +36,13 @@ builder.Services.AddCors(options =>
 
 // Configuración de la conexión a la base de datos
 builder.Services.AddSingleton<DatabaseInitializer>();  // Inyecta DatabaseInitializer
+
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+    logging.AddDebug();
+});
 
 // Inyección de dependencias para Event
 builder.Services.AddScoped<IEventRepository>(provider =>
@@ -82,10 +90,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             
         };
 });
+
+// Añadimos service de JWT
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Añadimos service de Coudinary para subir imagenés
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+builder.Services.AddHttpClient<IGeocodingService, LocationIQService>();
+builder.Services.AddScoped<IGeocodingService, LocationIQService>();
 
 var app = builder.Build();
 
