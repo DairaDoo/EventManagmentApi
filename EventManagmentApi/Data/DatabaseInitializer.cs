@@ -84,6 +84,19 @@ namespace EventManagement.Database
                     RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     Status VARCHAR(20) DEFAULT 'Pending' CHECK (Status IN ('Pending', 'Confirmed', 'Cancelled', 'Rejected'))
                 );
+
+                CREATE TABLE IF NOT EXISTS Payments (
+                    Id SERIAL PRIMARY KEY,
+                    EventId INTEGER NOT NULL,
+                    PaymentIntentId VARCHAR(255) NOT NULL,
+                    CustomerEmail VARCHAR(255) NOT NULL,
+                    Amount DECIMAL(10,2) NOT NULL,
+                    Currency VARCHAR(3) NOT NULL,
+                    Quantity INTEGER NOT NULL,
+                    Status VARCHAR(50) NOT NULL,
+                    CreatedAt TIMESTAMP NOT NULL,
+                    FOREIGN KEY (EventId) REFERENCES Events(Id)
+                );
             ";
 
             connection.Execute(createTablesQuery);

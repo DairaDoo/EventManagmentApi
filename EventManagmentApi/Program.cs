@@ -98,8 +98,19 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 
+// Añadimos service de Geolocalización
 builder.Services.AddHttpClient<IGeocodingService, LocationIQService>();
 builder.Services.AddScoped<IGeocodingService, LocationIQService>();
+
+// Añadimos service de Stripe para pago de eventos
+builder.Services.AddScoped<IStripeService, StripeService>();
+
+// Aseguramos que stripe este configurado
+var stripeSettings = builder.Configuration.GetSection("StripeSettings");
+if (string.IsNullOrEmpty(stripeSettings["SecretKey"]))
+{
+    throw new InvalidOperationException("Stripe Secret Key is not configured");
+}
 
 var app = builder.Build();
 
